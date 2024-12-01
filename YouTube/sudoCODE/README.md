@@ -213,4 +213,96 @@ to a particular topic).
 * Message ordering: order of message (often not required, but we must think of it before using using this pub-sub pattern) 
 * Poison messages: when using third party publishers, we have to be sure make sure that we are properly handling any malicious messages
 * Duplicage messages: it has to be made sure that same message is not read twice or more.
+* Be careful, because it might be an overkill.
+* usages:
+	* async worflow
+	* decoupling
+	* load balancing
+	* deferred processing
+	* data streaming
+	* 
+
+### Performance Metrics
+#### Throughput
+Amount of work that is done in a certain amount of time (reminds me of definition of a physical quantity **power**)
+It is ability to do work. For example, if there are 4 trucks available at our disposal, then we have an ability to transport 4 * 100 kg per hour
+```
+Throughput = f(resources, bandwidth)
+```
+
+#### Bandwidth
+can these resources be deployed?
+if more resource can be deployed then we have a higher band width. increasing bandwidth can also lead to increase in throughput if there are extra
+*resources* at hand. 
+
+#### Latency
+speed of the resources is also required to achieve maximum throughput. For example, if there are some bad api design (meaning our resources are underperforming)
+then we will have a lower throughput again.
+
+#### Performance of an application
+* api response time
+* throughput of the APIs
+* error occurrences
+* bug/defect in the code
+
+#### Performance of a db
+* time taken by various types of db queries
+* number of queries executed  per unit time (throughput)
+
+#### Performance of a cache
+* latency of writing to cache
+* number of invalidations and evication (higher better)
+* memory of cache instance
+
+#### Performance of a message queues
+* production and consumption rate
+* number of failed messages or retries
+* time taken by the consumer to process(or reliability of the consumer)
+
+#### Performance of a message worker
+#### Performance of a message instances (machines on which the application/software runs)
+
+
+#### How are these performances are tracked. 
+Perfromance Management tools (DataDog, newrelic) which may come as a software/sdk/container that attaches to a **component** and extracts the data and tracks
+the performance.
+
+### Faults and Failures
+Faults are somewhat unavoidable be it due to human reasons or due to machine related issues (crashes). But it is our job as a system designer that these faults
+do not lead to failures. **Fault tolerance mechanisms**
+e.g.
+* having replicated instances
+* having proper fail safe mechanisms in place
+* 
+
+
+### Scaling
+**vertical** adding more capacity to the existing resources
+**horizontal** if we increase the resources
+
+when can we say if the system is scalable?
+* if all requests can be handled
+* if things don't become more complex as we try to scale
+* if the performance does not take a hit.
+	(if you increase the number of chair only thinking it will scale the system, then we are taking a performance hit because we are not taking into account
+	the fact that the customers (users) will still have to wait longer to get their orders.... it also required an increase in the staff and other utensils)
+
+### Database replication
+- one advantage can be that it saves the day when we have a database fault, **the replica** can take the job of the main db.
+- helps reduce latency (over the internet) [geographically separated by long distances]
+- these can be used as **read replicas** [for basepair we do have that, and it has helped me take a look and come up with do some **analytics**]
+- **consistency challenge** 
+	* we have various consistency algorithms to take care of this
+	* read after write consistency (a new write issued, primary updates the values and all the replicas udpated then send back ack, meanwhile the primary waits and
+	only after all this, OK is issued back). **replication lag = 0** but the **latency** of the write operation is high. in case of failure of a replica, primary keeps
+	waiting for the ack
+	* **asynchronous replication**: primary does not wait for the ack from the replicas. lower latency. less **fault tolerant**.
+	* *semi-synchronous*: hybrid approach. waits for only one replica to ack. other replicas can replicate in the background
+
+### CAP Theorem
+* C: Consistency -> a read request returns the same value.
+* A: Availability -> a read request always return a **non-error** answer, without guarantee of same response from other replicas.
+* P: Partitioning -> bound to happen, an inherent nature of the network.
+- one  of these three has to be compromised
+- always always know and understand the use case.
 
