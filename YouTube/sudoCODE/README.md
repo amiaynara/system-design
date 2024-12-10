@@ -306,3 +306,37 @@ when can we say if the system is scalable?
 - one  of these three has to be compromised
 - always always know and understand the use case.
 
+
+### Sharding
+**Horizontal Partitioning** is called **Sharding**. Horizontal meaning -> save set of rows in different databases.
+**vertical partitioning**: Is storing columns of a database in different databases.
+**logical** and **physical** sharding. Logical sharding -> paritioning on the same machine.
+**Algorithmic sharding**: When the application knows where to route the query (app has to take care of it). A hashing function that decides which shard to direct the data to.
+**Dynamic Sharding module or locator service**: appliation/client does not know where to direct the query.
+
+disadvantages:
+	* **hotspots**:
+	* **one way route**: this should be the last resort (not prematurely)
+	* lot of joins is required -> then don't shard
+
+#### Key based sharding
+**Shard key**: A key (a column in the database) that is passed to the hash function and is used the hash function to generate shard number to which the data will be directed to.
+	Advantages:
+	* evenly distributed data
+	Some drawbacks:
+	* when the number shards are increased, then the hash functions now have now to be changed.
+	* 
+#### Range based sharding: 
+example: you have an event being logged (u_id, event, date)
+you decide range (jan-march, apr-jun, jun-dec). And according to these you store the data. And now that you have stored the data, before querying the data, you can first decide
+the date and then decide the range (choose the range) and then direct the query to a particular range. 
+* no need of hash function
+* hotspots
+
+#### Directory Based Sharding
+- an example dynamic sharding technique
+- A lookup table tells us where to look for data
+- a preknowledge that even distribution of data
+- correct choice of look up keys is critical
+- 
+
