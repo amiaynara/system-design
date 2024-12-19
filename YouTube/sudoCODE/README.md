@@ -339,4 +339,17 @@ the date and then decide the range (choose the range) and then direct the query 
 - a preknowledge that even distribution of data
 - correct choice of look up keys is critical
 - 
+implementation of dynamic sharding:
+
+data -> H(x) -> hash -> modulo number of servers -> hash key _n_
+if N servers then there will be (N-1) hash keys.
+Where does the data get stored? It gets stored in the server number _n_.
+
+Problem: 
+1. Many record will have **the same hash key or the server number**, in that case collision occurs.
+2. Also in many case we want to have a **scalable system** which implies that the total number of servers (N) will be dynamic.
+	And change in the number of servers would force a movement of records and recalculation of hash keys (since hash key is dependent on
+	number of servers). Too much movement will beat the purpose of sharding and increase the cost. Solution : **consistent hashing**
+
+
 
