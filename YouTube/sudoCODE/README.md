@@ -352,4 +352,16 @@ Problem:
 	number of servers). Too much movement will beat the purpose of sharding and increase the cost. Solution : **consistent hashing**
 
 
+### Consistent hashing
+- tries to map the data and the servers on a circle (0-360)
+- it can reduce the number of records moved when the number of servers are changed
+- but this can lead to creation of hotspots or overload; to solve this we have -> replicas of each server again mapped on to the circle
+-
 
+### interviews
+- when presented with a question, try to think about
+	* **functional requirements**: application level requirements (API,) [comes from user]
+	* **non-functional requirements**: system level requirements (**capacity estimation**, **resouces**, tech stack)[decided by engineering]
+-
+
+ 
